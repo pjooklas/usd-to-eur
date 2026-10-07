@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f3f6f2">
+    <title>USD Invoice Converter</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+
+<body>
+    <main class="workspace">
+        <header class="topbar">
+            <a class="wordmark" href="/" aria-label="USD Invoice Converter home">
+                <span class="mark" aria-hidden="true">↗</span>
+                <span>ledger<span class="wordmark-dot">.</span></span>
+            </a>
+            <div class="privacy-note"><span class="privacy-dot"></span> Private on this device</div>
+        </header>
+
+        <section class="intro" aria-labelledby="page-title">
+            <p class="eyebrow">INVOICE CURRENCY CONVERTER <span>·</span> EUR</p>
+            <h1 id="page-title">A clear rate.<br><em>A clean finish.</em></h1>
+            <p class="intro-copy">Add an official euro conversion to your USD invoice, using the rate for its issue
+                date.</p>
+        </section>
+
+        <section class="flow" aria-label="Invoice conversion">
+            <div class="steps" aria-label="Progress">
+                <div class="step is-current" id="step-upload"><span>01</span> Upload</div>
+                <span class="step-rule"></span>
+                <div class="step" id="step-review"><span>02</span> Review</div>
+                <span class="step-rule"></span>
+                <div class="step" id="step-download"><span>03</span> Download</div>
+            </div>
+
+            <section class="panel upload-panel" id="upload-panel">
+                <div class="panel-heading">
+                    <div>
+                        <p class="section-index">START HERE</p>
+                        <h2>Choose your invoice</h2>
+                    </div>
+                    <span class="file-stamp">PDF <span>·</span> UP TO 20 MB</span>
+                </div>
+                <form id="inspect-form">
+                    <label class="dropzone" id="dropzone" for="invoice-file">
+                        <input id="invoice-file" name="invoice" type="file" accept="application/pdf,.pdf" required>
+                        <span class="upload-symbol" aria-hidden="true">↑</span>
+                        <span class="drop-title" id="file-label">Drop a PDF here or <u>browse files</u></span>
+                        <span class="drop-hint">Selectable text works best. Scanned PDFs aren’t supported yet.</span>
+                    </label>
+                    <button class="button button-dark" id="inspect-button" type="submit">
+                        Read invoice <span aria-hidden="true">→</span>
+                    </button>
+                </form>
+            </section>
+
+            <section class="panel review-panel is-hidden" id="review-panel" aria-labelledby="review-title">
+                <div class="panel-heading">
+                    <div>
+                        <p class="section-index">PLEASE CHECK</p>
+                        <h2 id="review-title">Confirm the invoice details</h2>
+                    </div>
+                    <button class="text-button" id="change-file" type="button">Choose another PDF</button>
+                </div>
+                <div id="warnings" class="warnings is-hidden" role="status"></div>
+                <form id="convert-form">
+                    <div class="fields">
+                        <label class="field">
+                            <span>Issue date</span>
+                            <span class="field-input"><input id="issue-date" name="issue_date" type="date"
+                                    required><small>YYYY-MM-DD</small></span>
+                        </label>
+                        <label class="field">
+                            <span>Invoice total <b>USD</b></span>
+                            <span class="field-input amount-input"><span aria-hidden="true">$</span><input
+                                    id="usd-total" name="usd_total" type="number" min="0.01" step="0.01"
+                                    inputmode="decimal" placeholder="0.00" required></span>
+                        </label>
+                    </div>
+                    <div class="review-foot">
+                        <p>Check both values before continuing. You can edit either one.</p>
+                        <button class="button button-green" id="convert-button" type="submit">Confirm &amp; convert
+                            <span aria-hidden="true">→</span></button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="result-panel is-hidden" id="result-panel" aria-live="polite">
+                <div class="result-topline"><span class="result-check" aria-hidden="true">✓</span><span>CONVERSION
+                        READY</span></div>
+                <div class="result-content">
+                    <div>
+                        <p class="result-label">EURO TOTAL</p>
+                        <p class="result-total" id="result-total">€0.00</p>
+                    </div>
+                    <div class="result-details">
+                        <p><span>Invoice total</span><strong id="result-usd">$0.00</strong></p>
+                        <p><span>Official rate</span><strong id="result-rate">1 EUR = 0 USD</strong></p>
+                        <p><span>Rate date</span><strong id="result-date">0000-00-00</strong></p>
+                    </div>
+                </div>
+                <p class="rate-source">Lietuvos bankas · European Central Bank reference rate</p>
+                <a class="button button-dark download-link" id="download-link" href="#" download>Download updated
+                    invoice <span aria-hidden="true">↓</span></a>
+                <button class="text-button new-invoice" id="new-invoice" type="button">Convert another invoice</button>
+            </section>
+
+            <div class="status" id="status" role="status" aria-live="polite"></div>
+        </section>
+
+        <footer class="footer">
+            <span>The exchange rate and EUR total are added beneath the invoice USD total.</span>
+            <a href="https://www.lb.lt/lt/kasdien-skelbiami-euro-ir-uzsienio-valiutu-santykiai-skelbia-europos-centrinis-bankas"
+                target="_blank" rel="noreferrer">Rate source <span aria-hidden="true">↗</span></a>
+        </footer>
+    </main>
+</body>
+
+</html>
