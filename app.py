@@ -26,7 +26,10 @@ def _read_invoice() -> tuple[bytes, str]:
     upload = request.files.get("invoice")
     if upload is None or not upload.filename:
         raise ValueError("Choose an invoice PDF to continue.")
-    pdf_bytes = upload.stream.read(MAX_UPLOAD_BYTES + 1)
+    try:
+        pdf_bytes = upload.stream.read(MAX_UPLOAD_BYTES + 1)
+    finally:
+        upload.close()
     if len(pdf_bytes) > MAX_UPLOAD_BYTES:
         raise ValueError("The PDF is larger than the 20 MB upload limit.")
     if not pdf_bytes.startswith(b"%PDF-"):

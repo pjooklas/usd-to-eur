@@ -83,11 +83,15 @@ def _parse_usd_amount(value: str) -> Decimal:
 
 
 def extract_invoice_fields(pdf_bytes: bytes) -> InvoiceFields:
+    document = None
     try:
         document = fitz.open(stream=pdf_bytes, filetype="pdf")
         text = "\n".join(page.get_text() for page in document)
     except Exception as exc:
         raise InvoiceExtractionError("The uploaded file is not a readable PDF.") from exc
+    finally:
+        if document is not None:
+            document.close()
 
     if not text.strip():
         raise InvoiceExtractionError("No selectable text was found. Scanned PDFs are not supported yet.")
