@@ -16,6 +16,15 @@ Invoice bytes are handled in the local app process and are not stored by the app
 
 The app binds to localhost only and limits uploads to 20 MB.
 
+## Deploy on Render
+
+Create one Render Web Service connected to this GitHub repository. The Flask backend serves the HTML page and its CSS/JavaScript, so the frontend and backend deploy together; no separate frontend service is needed.
+
+- Build command: `pip install -r requirements.txt`
+- Start command: `gunicorn app:app --bind 0.0.0.0:$PORT`
+
+The app does not save uploaded PDFs, but a hosted deployment receives their contents for processing. Add authentication before sharing the public service URL or using it with sensitive invoices.
+
 ## Tests
 
 ```bash
